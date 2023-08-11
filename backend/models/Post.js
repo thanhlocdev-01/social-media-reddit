@@ -26,7 +26,7 @@ const postSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    dowvotes: {
+    downvotes: {
       type: Array,
       default: [],
     },
