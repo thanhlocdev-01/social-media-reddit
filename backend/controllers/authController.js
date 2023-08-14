@@ -22,6 +22,16 @@ const authController = {
       res.status(500).json(err);
     }
   },
+  generateAccessToken: (user) => {
+    return jwt.sign(
+      {
+        id: user.id,
+        isAdmin: user.isAdmin
+      },
+      process.env.JWT_KEY,
+      { ex}
+    )
+  },
   //LOGIN
   loginUser: async (req, res) => {
     try {

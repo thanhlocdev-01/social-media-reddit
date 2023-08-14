@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const postController = require("../controllers/postController")
+const postController = require("../controllers/postController");
+const commentController = require("../controllers/commentController");
 
 //CREATE A POST
 router.post("/", postController.createPost);
