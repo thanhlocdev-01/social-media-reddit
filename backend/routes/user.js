@@ -1,20 +1,21 @@
 const router = require("express").Router();
 const userController = require("../controllers/userController");
+const middlewareController = require("../controllers/middlewareController");
 
 //UPDATE A USER
-router.put("/:id", userController.updateUser);
+router.put("/:id", middlewareController.verifyTokenAndUserAuthorization, userController.updateUser);
 
 //DELETE A USER
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id", middlewareController.verifyTokenAndUserAuthorization, middlewareController.verifyToken, userController.deleteUser);
 
 //GET A USER
-router.get("/:id", userController.getUser);
+router.get("/:id", middlewareController.verifyToken,  userController.getUser);
 
 //FOLLOW A USER
-router.put("/:id/follow", userController.followUser);
+router.put("/:id/follow", middlewareController.verifyToken, userController.followUser);
 
 //UNFOLLOW A USER
-router.put("/:id/unfollow",userController.unfollowUser);
+router.put("/:id/unfollow", middlewareController.verifyToken, userController.unfollowUser);
 
 
 module.exports = router;
