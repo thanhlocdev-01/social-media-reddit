@@ -68,6 +68,13 @@ const authController = {
         //Generate refresh token
         const refreshToken = authController.generateRefreshToken(user);
         refreshTokens.push(refreshToken);
+        //STORE REFRESH TOKEN IN COOKIE
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure:false,
+          path: "/",
+          sameSite: "strict",
+        });
         const { password, ...others } = user._doc;
         res.status(200).json({ ...others, accessToken, refreshToken });
       }
@@ -77,7 +84,7 @@ const authController = {
   },
   requestRefreshToken: async (req, res) => {
     //Take refresh token from user
-    const refreshToken = req.body.token;
+    const refreshToken = req.cookies.refreshToken;
     //Send error if token is not valid
     if (!refreshToken) return res.status(401).json("You're not authenticated");
     if (!refreshTokens.includes(refreshToken)) {
@@ -92,11 +99,24 @@ const authController = {
       const newAccessToken = authController.generateAccessToken(user);
       const newRefreshToken = authController.generateRefreshToken(user);
       refreshTokens.push(newRefreshToken);
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure:false,
+        path: "/",
+        sameSite: "strict",
+      });
       res.status(200).json({
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
       });
     });
+  },
+  //LOG OUT
+  logOut: async (req, res) => {
+    //Clear cookies when user logs out
+    refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
+    res.clearCookie("refreshToken");
+    res.status(200).json("Logged out successfully!");
   },
 };
 

@@ -3,10 +3,13 @@ const jwt = require("jsonwebtoken");
 const middlewareController = {
     //Verify token
     verifyToken: (res, req, next) => {
+        //ACCESS TOKEN FROM HEADER, REFRESH TOKEN FROM COOKIE
         const token = req.headers.token;
-        if(token) {
-            const accessToken = token.split(" ")[1];
-            jwt.verify(accessToken, process.env.JWT_ACCESS_KEY,  (err, user) => {
+        const refreshToken = req.cookies.refreshToken;
+        if (token && refreshToken) {
+          const accessToken = token.split(" ")[1];
+          console.log(accessToken);
+          jwt.verify(accessToken, process.env.JWT_KEY, (err, user) => {
                 if(err) {
                     res.status(403).json("Token is not valid")
                 }
@@ -28,13 +31,15 @@ const middlewareController = {
         });
     },
     verifyTokenAndUserPostAuthorization: (req, res, next) => {
-          verifyToken(req, res, () => {
-            if (req.user.id === req.body.userId.trim() || req.user.isAdmin) {
-              next();
-            } else {
-              res.status(403).json("You're not allowed to do that!");
-            }
-          });
+      verifyToken(req, res, () => {
+        console.log(req.user.id);
+        console.log(req.body.userId);
+        if (req.user.id === req.body.userId || req.user.isAdmin) {
+          next();
+        } else {
+          res.status(403).json("You're not allowed to do that!");
+        }
+      });
     },
     verifyTokenAndAdmin: (req, res, next) => {
         verifyToken(req, res, () => {
