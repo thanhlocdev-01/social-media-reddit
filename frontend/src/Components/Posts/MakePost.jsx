@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import Input from "../InputFields/Input";
+import InputField from "../InputFields/Input";
 import { createPost } from "../redux/postSlice";
 import './post.css';
 
@@ -27,8 +27,22 @@ const MakePost = (props) => {
                     Post
                 </p>
             </div>
-            <Input data={title} inputType='textarea' setData={setTitle} label='Title' classStyle='makepost-title' />
-            <Input data={desc} inputType='textarea' setData={setDesc} label='Description' classStyle='makepost-desc' />
+            <InputField
+                type="text"
+                data={title} 
+                inputType='textarea' 
+                setData={setTitle} 
+                label='Title' 
+                classStyle='makepost-title' 
+            />
+            <InputField 
+                type="text"
+                data={desc} 
+                inputType='textarea' 
+                setData={setDesc} 
+                abel='Description' 
+                classStyle='makepost-desc' 
+            />
             <label>Tags</label>
             <div className="makepost-tags">
                 {tags.map((tag, idx) => {

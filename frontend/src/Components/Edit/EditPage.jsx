@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import './edit.css'
-import Input from '../InputFields/Input';
+import InputField from '../InputFields/Input';
 import {updateUser} from '../redux/apiRequests'
 
 const EditPage = (props) => {
@@ -35,14 +35,41 @@ const EditPage = (props) => {
     }
     return ( 
         <>
-        <form   onSubmit={handleSubmit}>
+        <form
+        onSubmit={handleSubmit}
+        className="edit-form"
+        data-testid="editForm"
+        >
             <section className="edit-container">
                 <button className="close">SAVE</button>
                 <div className="edit-profile">Edit Profile</div>
                 <div className="input-container">
-                    <Input label='Display name' data={user.name} setData={setName}/>
-                    <Input label='Age' data={user.age} setData={setAge}/>
-                    <Input inputType='textarea' classStyle='input-about' label='About' data={user.about} setData={setAbout}/>
+                    <InputField 
+                        label='Display name' 
+                        type="text" 
+                        data={user.name} 
+                        setData={setName}
+                    />
+                    <InputField
+                        label='Age'
+                        type="text"
+                        data={user.age} 
+                        setData={setAge}
+                    />
+                    {/* <Input 
+                        inputType='textarea' 
+                        classStyle='input-about' 
+                        label='About' 
+                        data={user.about} 
+                        setData={setAbout}
+                    /> */}
+                    <InputField
+                        inputType="textarea"
+                        data={user.about}
+                        setData={setAbout}
+                        classStyle="input-about"
+                        label="About"
+                    />
                 <label>Profile Picture</label>
                 <div className="input-image-container">
                     {avaUrl.map((url) => {

@@ -4,22 +4,22 @@ const postSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
-      require: true,
+      required: true,
     },
     title: {
       type: String,
-      require: true,
-      min: 10,
-      max: 100,
+      required: true,
+      minlegth: 10,
+      maxlegth: 100,
     },
     description: {
       type: String,
-      require: true,
-      min: 10,
+      required: true,
+      minlegth: 10,
     },
     tags: {
       type: Number,
-      require: true,
+      required: true,
       default: 0,
     },
     upvotes: {

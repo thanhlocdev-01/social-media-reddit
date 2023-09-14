@@ -4,9 +4,9 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      require: true,
-      min: 6,
-      max: 20,
+      required: true,
+      minlegth: 6,
+      maxlegth: 20,
       unique: true,
     },
     displayName: {
@@ -15,19 +15,19 @@ const userSchema = new mongoose.Schema(
     },
     age: {
       type: Number,
-      min: 14,
+      minlegth: 14,
       default: 99
     },
     email: {
       type: String,
-      require: true,
-      max: 50,
+      required: true,
+      maxlegth: 50,
       unique: true,
     },
     password: {
       type: String,
-      require: true,
-      min: 6,
+      required: true,
+      minleght: 6,
     },
     isAdmin: {
         type: Boolean,
@@ -35,7 +35,12 @@ const userSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: "",
+      default:
+        "https://preview.redd.it/rrz3hmsxcll71.png?width=640&crop=smart&auto=webp&s=87cc5ed38d8f088ef9fffef7a4c5756b64309d6a",
+    },
+    theme: {
+      type: String,
+      default: "#ff9051",
     },
     karmas: {
       type: Number,
