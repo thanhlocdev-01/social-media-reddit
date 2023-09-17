@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import EditPage from "../Edit/EditPage";
 import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
+import Header from "../Feed/Header/Header";
 import MakePost from "../Posts/MakePost";
 import Posts from "../Posts/Post";
 import "../../App.css";
