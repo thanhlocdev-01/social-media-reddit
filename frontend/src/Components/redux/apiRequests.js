@@ -1,6 +1,18 @@
 import { updateStart, updateError, updateSuccess } from "./userSlice";
 import axios from 'axios';
-import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess } from "./authSlice";
+import { 
+  loginFailed, 
+  loginStart, 
+  loginSuccess, 
+  registerFailed, 
+  registerStart, 
+  registerSuccess 
+} from "./authSlice";
+import {
+  getAllPostFailed,
+  getAllPostStart,
+  getAllPostSuccess,
+} from "./postSlice";
 
 export const updateUser = async (user, dispatch) => {
     dispatch(updateStart());
@@ -31,5 +43,17 @@ export const loginUser = async (user, dispatch, navigate) => {
     } catch (err) {
       console.log(err);
       dispatch(registerFailed("Something is wrong"));
+    }
+  };
+
+  export const getAllPosts = async (dispatch, token) => {
+    dispatch(getAllPostStart());
+    try {
+      const res = await axios.get("/v1/post/", {
+        headers: {token: `Bearer ${token}`},
+      });
+      dispatch(getAllPostSuccess(res.data));
+    } catch (err) {
+      dispatch(getAllPostFailed());
     }
   };
