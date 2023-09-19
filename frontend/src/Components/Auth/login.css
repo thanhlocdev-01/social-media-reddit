@@ -21,6 +21,7 @@
       #784ba0 50%,
       #2b86c5 100%
     );
+    font-weight: 700;
   }
   form {
     display: flex;

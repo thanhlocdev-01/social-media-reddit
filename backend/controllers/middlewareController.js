@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const Post = require("../models/Post");
 
 const middlewareController = {
     //Verify token
     verifyToken: (res, req, next) => {
         //ACCESS TOKEN FROM HEADER, REFRESH TOKEN FROM COOKIE
         const token = req.headers.token;
-        const refreshToken = req.cookies.refreshToken;
-        if (token && refreshToken) {
+        if (token) {
           const accessToken = token.split(" ")[1];
           console.log(accessToken);
           jwt.verify(accessToken, process.env.JWT_KEY, (err, user) => {
@@ -17,7 +18,7 @@ const middlewareController = {
                 next();
             });
         }
-        else{
+        else {
             return res.status(401).json("You're not authenticated")
         }
     },
