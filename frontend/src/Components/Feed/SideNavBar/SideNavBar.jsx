@@ -8,8 +8,7 @@ import { logOutUser } from "../../redux/apiRequests";
 
 const SideNavBar = (props) => {
   const { id } = props;
-  const user = useSelector(
-    (state) => state.auth.login?.currentUser);
+  const user = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logOut = () => {

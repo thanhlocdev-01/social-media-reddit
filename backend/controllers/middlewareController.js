@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-const Post = require("../models/Post");
 
 const middlewareController = {
     //Verify token
@@ -17,13 +15,12 @@ const middlewareController = {
                 req.user = user;
                 next();
             });
-        }
-        else {
+        } else {  
             return res.status(401).json("You're not authenticated")
         }
     },
     verifyTokenAndUserAuthorization: (req, res, next) => {
-        verifyToken(req, res, () => {
+        middlewareController.verifyToken(req, res, () => {
           if (req.user.id === req.params.id.trim() || req.user.isAdmin) {
             next();
           } else {
@@ -32,7 +29,7 @@ const middlewareController = {
         });
     },
     verifyTokenAndUserPostAuthorization: (req, res, next) => {
-      verifyToken(req, res, () => {
+      middlewareController.verifyToken(req, res, () => {
         console.log(req.user.id);
         console.log(req.body.userId);
         if (req.user.id === req.body.userId || req.user.isAdmin) {
@@ -43,7 +40,7 @@ const middlewareController = {
       });
     },
     verifyTokenAndAdmin: (req, res, next) => {
-        verifyToken(req, res, () => {
+        middlewareController.verifyToken(req, res, () => {
           if (req.user.isAdmin) {
             next();
           } else {

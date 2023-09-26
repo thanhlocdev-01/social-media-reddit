@@ -1,24 +1,27 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import InputField from "../InputFields/Input";
-import { createPost } from "../redux/postSlice";
+import { createPost } from "../redux/apiRequests";
+import { makePostToggle } from "../redux/navigateSlice"
 import './post.css';
 
-const MakePost = (props) => {
-    const {setOpen} = props;
+const MakePost = () => {
     const dispath = useDispatch();
+    const user = useSelector((state) => state.user.user?.currentUser);
     const [title, setTitle] = useState('Add a title');
     const [desc, setDesc] = useState("Add a Description");
     const tags = ['None', 'NSFW', 'Mood', 'Quotes', 'Shitpost'];
     const [selectedIdx, setSelectedIdx] = useState(0)
     const handlePost =  () => {
-        setOpen(false);
+        dispatch(makePostToggle(false));
         const newPost = {
+            userId: user?._id,
             title: title,
             description: desc,
-            tag: selectedIdx,
-        };
-        dispath(createPost(newPost))
+            tags: selectIdx,
+    };
+    createPost(dispatch, user?.accessToken, newPost);
     }
     return ( 
         <section className="makepost-container">

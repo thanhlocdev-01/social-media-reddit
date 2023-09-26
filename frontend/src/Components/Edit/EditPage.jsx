@@ -1,11 +1,14 @@
 import { useState } from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux';
+import { useParams } from 'react-router-dom';
 import './edit.css'
 import InputField from '../InputFields/Input';
 import {updateUser} from '../redux/apiRequests'
 
 const EditPage = (props) => {
     const {setEdit} = props;
+    const { id } = useParams();
+    const currentUser = useSelector((state) => state.auth.login?.currentUser);
     const avaUrl = [
     'https://preview.redd.it/rrz3hmsxcll71.png?width=640&crop=smart&auto=webp&s=87cc5ed38d8f088ef9fffef7a4c5756b64309d6a',
     'https://preview.redd.it/fc9k38jwfwv51.png?auto=webp&s=9ce3d4c488091bb21969fd0fad7a6d89e4bfc50d',
@@ -25,13 +28,13 @@ const EditPage = (props) => {
         e.preventDefault();
         setEdit(false);
         const updatedUser = {
-            name: name,
+            displayName: name,
             age: age,
             about: about,
-            avaUrl: url,
+            profilePicture: url,
             theme: theme
         };
-        updateUser(updatedUser,dispatch)
+        updateUser(dispatch, updatedUser, id, currentUser?.accessToken);
     }
     return ( 
         <>
@@ -41,7 +44,14 @@ const EditPage = (props) => {
         data-testid="editForm"
         >
             <section className="edit-container">
-                <button className="close">SAVE</button>
+            <div className="close-container">
+                <p className="close-x" onClick={() => setEdit(false)}>
+                    X
+                </p>
+                <button type="submit" className="close">
+                    SAVE
+                </button>
+            </div>
                 <div className="edit-profile">Edit Profile</div>
                 <div className="input-container">
                     <InputField 
