@@ -6,10 +6,10 @@ import {setDelete} from "../../redux/navigateSlice";
 import Overlay from "../../Overlay/Overlay";
 
 const Popup = (props) => {
-  const { h1, h2, button2 } = props;
+  const { h1, h2, button2, setDeletedPostId,deletedPostId } = props;
   const user = useSelector((state) => state.user.user?.currentUser);
   const dispatch = useDispatch();
-  const isDelete = useSelector((state) => state.nav.deleteState)
+  const isDelete = useSelector((state) => state.nav.deleteState);
   const handleDelete = () => {
     dispatch(
       setDelete({
@@ -17,6 +17,7 @@ const Popup = (props) => {
         open: false,
       })
     );
+    deletePost(dispatch, user?.accessToken, isDelete.id, user?._id, setDelete,setDeletedPostId, deletedPostId);
   };
   const closePopup = () => {
     dispatch(
@@ -26,9 +27,6 @@ const Popup = (props) => {
       })
     );
   };
-  useEffect(() => {
-    console.log(isDelete);
-  }, [isDelete]);
   return (
     <Overlay>
       <div className="popups-close" onClick={closePopup}>

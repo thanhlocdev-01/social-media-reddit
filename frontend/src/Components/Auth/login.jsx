@@ -35,6 +35,7 @@ const Login = () => {
           <InputField
             data={username}
             type="text"
+            placeholder="Enter username"
             setData={setUsername}
             label="USERNAME"
             classStyle="login-username"
@@ -42,6 +43,7 @@ const Login = () => {
           <InputField
             data={password}
             type="password"
+            placeholder="Enter password"
             setData={setPassword}
             label="PASSWORD"
             classStyle="login-password"

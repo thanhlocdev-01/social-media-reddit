@@ -5,6 +5,9 @@ import {
   getUserStart,
   getUserSuccess,
   getUserFailed,
+  followUserStart,
+  followUserSuccess,
+  followUserFailed,
 } from "./userSlice";
 import axios from 'axios';
 import { 
@@ -40,6 +43,9 @@ import {
   addCommentFailed,
   addCommentStart,
   addCommentSuccess,
+  deleteCommentFailed,
+  deleteCommentStart,
+  deleteCommentSuccess,
 } from "./commentSlice";
 
 export const loginUser = async (user, dispatch, navigate) => {
@@ -83,7 +89,6 @@ export const loginUser = async (user, dispatch, navigate) => {
       const res = await axios.put(`/v1/users/${id}`, user, {
         headers: { token: `Bearer ${token}` },
       });
-      console.log(res.data);
       dispatch(updateSuccess(res.data));
     } catch (err) {
       console.log(err);
@@ -102,7 +107,20 @@ export const loginUser = async (user, dispatch, navigate) => {
       dispatch(getUserFailed());
     }
   };
-  
+
+  export const followUser = async (dispatch, id, userId, token, setFollow, isFollowed) => {
+    dispatch(followUserStart());
+    try {
+      const res = await axios.put(`/v1/users/${id}/follow`, userId, {
+        headers: { token: `Bearer ${token}` },
+      });
+      setFollow(isFollowed ? false : true);
+      dispatch(followUserSuccess(res.data));
+    } catch (err) {
+      dispatch(followUserFailed());
+    }
+  };
+
   //POST
   export const getAllPosts = async (dispatch, token, hot) => {
     dispatch(getAllPostStart());
@@ -126,6 +144,10 @@ export const loginUser = async (user, dispatch, navigate) => {
       const res = await axios.get(`/v1/post/user/${userId}`, {
         headers: { token: `Bearer ${token}` },
       });
+      const comments = await axios.get(`/v1/post/comments`, {
+        headers: { token: `Bearer ${token}` },
+      });
+      dispatch(getAllCommentsSuccess(comments.data));
       dispatch(getUserPostSuccess(res.data));
     } catch (err) {
       dispatch(getUserPostFailed());
@@ -144,7 +166,15 @@ export const loginUser = async (user, dispatch, navigate) => {
     }
   };
 
-  export const deletePost = async (dispatch, token, id, userId, setDelete) => {
+  export const deletePost = async (
+    dispatch,
+    token,
+    id,
+    userId,
+    setDelete,
+    setDeletedPostId,
+    deletedPostId
+  ) => {
     dispatch(deletePostStart());
     try {
       await axios.delete(`/v1/post/${id}`, {
@@ -152,6 +182,7 @@ export const loginUser = async (user, dispatch, navigate) => {
         data: { userId: userId },
       });
       dispatch(deletePostSuccess());
+      setDeletedPostId([...deletedPostId, id]);
       setDelete({
         open: false,
         status: true,
@@ -189,11 +220,30 @@ export const loginUser = async (user, dispatch, navigate) => {
   export const addComment = async (dispatch, token, id, comment) => {
     dispatch(addCommentStart());
     try {
-    const res = await axios.post(`/v1/post/comment/${id}`, comment, {
+      await axios.post(`/v1/post/comment/${id}`, comment, {
         headers: { token: `Bearer ${token}` },
       });
       dispatch(addCommentSuccess());
     } catch (err) {
       dispatch(addCommentFailed());
+    }
+  };
+
+  export const deleteUserComment = async (
+    dispatch,
+    token,
+    id,
+    setDeletedCommentId,
+    comment
+  ) => {
+    dispatch(deleteCommentStart());
+    try {
+      await axios.delete(`/v1/post/comment/${id}`, {
+        headers: { token: `Bearer ${token}` },
+      });
+      setDeletedCommentId([...comment, id]);
+      dispatch(deleteCommentSuccess());
+    } catch (err) {
+      dispatch(deleteCommentFailed());
     }
   };

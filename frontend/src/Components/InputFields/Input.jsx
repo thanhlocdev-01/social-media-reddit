@@ -2,7 +2,7 @@ import '../Edit/edit.css';
 import '../Posts/post.css';
 
 const Input = (props) => {
-    const { placeholder, inputType, type, data, setData, label, classStyle } =
+    const { value, placeholder, inputType, type, data, setData, label, classStyle } =
     props;
     return (
         <>
@@ -10,14 +10,14 @@ const Input = (props) => {
           {inputType === "textarea" ? (
             <textarea
               type="text"
-              value={data}
+              value={value}
               className={classStyle}
               placeholder={data}
               onChange={(e) => setData(e.target.value)}
             />
           ) : (
             <input
-              value={data}
+              value={value}
               type={type}
               className={classStyle}
               placeholder={placeholder}
