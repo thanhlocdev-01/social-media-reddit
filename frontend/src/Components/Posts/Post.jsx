@@ -11,11 +11,15 @@ import { useNavigate } from "react-router-dom";
 import './post.css';
 import "../Feed/HomePage/hompage.css";
 import { fullPostToggle, setDelete } from "../../redux/navigateSlice";
-import { downvotePost, upvotePost } from "../../redux/apiRequests";
+import { addComment, downvotePost, upvotePost } from "../../redux/apiRequests";
+import Comments from "../Comments/Comments";
+import InputField from "../InputFields/Input";
+import { useState } from "react";
 
 const Post = (props) => {
-    const { post } = props;
+    const { post, comments } = props;
     const navigate = useNavigate();
+    const [comment, setComment] = useState("");
     const user = useSelector((state) => state.user.user?.currentUser);
     const fullPost = useSelector((state) => state.nav.fullPost);
     const tags = ['None', 'NSFW', 'Mood', 'Quotes', 'Shitpost'];
@@ -55,7 +59,15 @@ const Post = (props) => {
     };
     downvotePost(dispatch, user?.accessToken, id, userId);
   };
-
+  const handleComment = (event, id) => {
+    event.preventDefault();
+    const newComment = {
+      content: comment,
+      ownerId: user?._id,
+    };
+    setComment("");
+    addComment(dispatch, user?.accessToken, id, newComment);
+  };
     return ( 
       <div key={post?._id} className="post-container">
         {fullPost?.postId === post?._id && (
@@ -119,7 +131,8 @@ const Post = (props) => {
       <div className="post-interactions">
         <div className="post-vote">
           <div className="upvote">
-          {post?.upvotes.includes(user?._id) ? (
+          {post?.upvotes.includes(user?._id) &&
+            !post?.downvotes.includes(user?._id) ? (
               <img
                 src={upVotedIcon}
                 alt="upvoted icon"
@@ -137,7 +150,8 @@ const Post = (props) => {
             {post?.upvotes?.length - post?.downvotes?.length}
           </div>
           <div className="downvote">
-          {post?.downvotes.includes(user._id) ? (
+          {post?.downvotes.includes(user._id) &&
+            !post?.upvotes.includes(user?._id) ? (
               <img
                 src={downVotedIcon}
                 alt="downvoted icon"
@@ -158,8 +172,46 @@ const Post = (props) => {
               onClick={() => handleReadmore(post?._id)}
             />
           </div>
-          <div className="comment-no"> {post?.comments?.length} </div>
+          <div className="comment-no"> {post?.comments} </div>
         </div>
+        {fullPost?.postId === post?._id && (
+          <div className="comments-opened">
+            <div className="comments-title">All comments</div>
+            {comments?.map((comment) => {
+              return (
+                <Comments
+                  _id={comment._id}
+                  postId={comment.postId}
+                  ownerId={comment.ownerId}
+                  username={comment.username}
+                  avaUrl={comment.avaUrl}
+                  theme={comment.theme}
+                  createdAt={comment.createdAt}
+                  updatedAt={comment.updatedAt}
+                  content={comment.content}
+                />
+              );
+            })}
+            <form
+              className="comments-interact"
+              onSubmit={(e) => handleComment(e, post?._id)}
+            >
+              <img
+                src={user?.profilePicture}
+                className="user-avatar"
+                style={{ backgroundColor: `${user?.theme}` }}
+                alt="user avatar"
+              />
+              <InputField
+                data={comment}
+                setData={setComment}
+                type="text"
+                placeholder="Add a comment"
+                classStyle="comment-input"
+              />
+            </form>
+          </div>
+        )}
       </div>
     </div>
        

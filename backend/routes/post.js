@@ -27,7 +27,13 @@ router.put("/:id/downvote", middlewareController.verifyToken, postController.dow
 //ADD A COMMENT
 router.post("/comment/:id",middlewareController.verifyToken, commentController.addComment);
 
+//GET ALL COMMENTS
+router.get("/comments", middlewareController.verifyToken, commentController.getAllComments);
+
 //GET ALL COMMENTS IN A POST
 router.get("/comment/:id",middlewareController.verifyToken, commentController.getCommentsInPost);
+
+//DELETE A COMMENT
+router.delete("/comment/:id", middlewareController.verifyTokenAndCommentAuthorization, commentController.deleteComment);
 
 module.exports = router;
