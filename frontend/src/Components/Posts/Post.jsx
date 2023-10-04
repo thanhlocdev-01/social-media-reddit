@@ -15,9 +15,10 @@ import { addComment, downvotePost, upvotePost } from "../../redux/apiRequests";
 import Comments from "../Comments/Comments";
 import InputField from "../InputFields/Input";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const Post = (props) => {
-    const { post, comments, setDeleteComment,deleteComment} = props;
+    const { post, comments, setDeleteComment, deleteComment} = props;
     const navigate = useNavigate();
     const [comment, setComment] = useState("");
     const user = useSelector((state) => state.user.user?.currentUser);
@@ -31,6 +32,12 @@ const Post = (props) => {
     const fullPost = useSelector((state) => state.nav.fullPost);
     const tags = ['None', 'NSFW', 'Mood', 'Quotes', 'Shitpost'];
     const dispatch = useDispatch();
+    useEffect(() => {
+      setUpVote(post?.upvotes?.includes(user?._id));
+      setDownVote(post?.downvotes?.includes(user?._id));
+      setTotal(post?.upvotes?.length - post?.downvotes?.length);
+    }, [fullPost]);
+
     const handleDelete = (id) => {
         dispatch(
         setDelete({
@@ -58,7 +65,9 @@ const Post = (props) => {
     const userId = {
       userId: user?._id,
     };
-    setTotal(isUpVote ? totalVotes - 1 : isDownVote ? totalVotes + 2 : totalVotes+ 1);
+    setTotal(
+      isUpVote ? totalVotes - 1 : isDownVote ? totalVotes + 2 : totalVotes + 1
+    );
     setUpVote(isUpVote ? false : true);
     setDownVote(false);
     upvotePost(dispatch, user?.accessToken, id, userId);
@@ -67,7 +76,9 @@ const Post = (props) => {
     const userId = {
       userId: user?._id,
     };
-    setTotal(isDownVote ? totalVotes + 1 : isUpVote ? totalVotes-2 : totalVotes - 1 );
+    setTotal(
+      isDownVote ? totalVotes + 1 : isUpVote ? totalVotes - 2 : totalVotes - 1
+    );
     setDownVote(isDownVote ? false : true);
     setUpVote(false);
     downvotePost(dispatch, user?.accessToken, id, userId);
@@ -81,6 +92,7 @@ const Post = (props) => {
     setComment("");
     addComment(dispatch, user?.accessToken, id, newComment);
   };
+
     return ( 
       <div key={post?._id} className="post-container">
         {fullPost?.postId === post?._id && (
@@ -111,7 +123,6 @@ const Post = (props) => {
               alt="delete"
               onClick={() => handleDelete(post?._id)}
             />
-            <img src={editIcon} alt="delete" />
           </div>
         )}
       </div>
@@ -140,6 +151,11 @@ const Post = (props) => {
         >
           {post?.description}
         </div>
+        {post?.imageUrl && (
+          <div className="post-image-container">
+            <img className="post-image" src={post?.imageUrl} alt="postImg" />
+          </div>
+        )}
       </div>
       <div className="post-interactions">
         <div className="post-vote">

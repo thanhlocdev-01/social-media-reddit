@@ -5,11 +5,14 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const morgan = require("morgan");
+var bodyParser = require("body-parser");
+const { cloudinary } = require("./utils/cloudinary");
 const cookieParser = require("cookie-parser");
 
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/post");
 const userRoute = require("./routes/user");
+
 dotenv.config();
 
 //CONNECT DATABASE
@@ -19,7 +22,14 @@ mongoose.connect(process.env.DB_URL, () =>{
 
 
 
-app.use(express.json());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 app.use(cors());
 app.use(cookieParser());
 app.use(morgan("common"));

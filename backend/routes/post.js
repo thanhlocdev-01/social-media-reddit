@@ -1,10 +1,16 @@
 const router = require("express").Router();
-const postController = require("../controllers/postController");
 const commentController = require("../controllers/commentController");
+const postController = require("../controllers/postController");
+const upload = require("../utils/multer");
 const middlewareController = require("../controllers/middlewareController");
 
 //CREATE A POST
-router.post("/", middlewareController.verifyToken, postController.createPost);
+router.post(
+    "/",
+    upload.single("image"),
+    middlewareController.verifyToken,
+    postController.createPost
+  );
 
 //UPDATE A POST
 router.put("/:id", postController.updatePost);
@@ -13,7 +19,7 @@ router.put("/:id", postController.updatePost);
 router.delete("/:id", postController.deletePost);
 
 //GET ALL POST FROM A USER
-router.get("/user/:id", middlewareController.verifyToken, postController.getPostsFromOne);
+router.get("/user/:id", middlewareController.verifyToken,postController.getPostsFromOne);
 
 //GET ALL POSTS
 router.get("/", middlewareController.verifyToken, postController.getAllPosts);
@@ -34,6 +40,10 @@ router.get("/comments", middlewareController.verifyToken, commentController.getA
 router.get("/comment/:id",middlewareController.verifyToken, commentController.getCommentsInPost);
 
 //DELETE A COMMENT
-router.delete("/comment/:id", middlewareController.verifyTokenAndCommentAuthorization, commentController.deleteComment);
+router.delete(
+    "/comment/:id",
+    middlewareController.verifyTokenAndCommentAuthorization,
+    commentController.deleteComment
+  );
 
 module.exports = router;

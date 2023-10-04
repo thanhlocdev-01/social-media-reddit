@@ -108,14 +108,26 @@ export const loginUser = async (user, dispatch, navigate) => {
     }
   };
 
-  export const followUser = async (dispatch, id, userId, token, setFollow, isFollowed) => {
+  export const followUser = async (
+    dispatch,
+    id,
+    userId,
+    token,
+    setFollow,
+    isFollowed
+  ) => {
     dispatch(followUserStart());
     try {
       const res = await axios.put(`/v1/users/${id}/follow`, userId, {
         headers: { token: `Bearer ${token}` },
       });
       setFollow(isFollowed ? false : true);
+      const update = {
+        ...res.data,
+        accessToken: token,
+      };
       dispatch(followUserSuccess(res.data));
+      dispatch(updateSuccess(update));
     } catch (err) {
       dispatch(followUserFailed());
     }
@@ -154,12 +166,13 @@ export const loginUser = async (user, dispatch, navigate) => {
     }
   };
   
-  export const createPost = async (dispatch, token, post) => {
+  export const createPost = async (dispatch, token, post, postToggle) => {
     dispatch(createPostStart());
     try {
       await axios.post("/v1/post", post, {
         headers: { token: `Bearer ${token}` },
       });
+      dispatch(postToggle(false));
       dispatch(createPostSuccess());
     } catch (err) {
       dispatch(createPostFailed());
@@ -233,6 +246,7 @@ export const loginUser = async (user, dispatch, navigate) => {
     dispatch,
     token,
     id,
+    ownerId,
     setDeletedCommentId,
     comment
   ) => {
@@ -240,6 +254,7 @@ export const loginUser = async (user, dispatch, navigate) => {
     try {
       await axios.delete(`/v1/post/comment/${id}`, {
         headers: { token: `Bearer ${token}` },
+        data: { ownerId: ownerId },
       });
       setDeletedCommentId([...comment, id]);
       dispatch(deleteCommentSuccess());
