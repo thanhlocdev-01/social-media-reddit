@@ -14,10 +14,10 @@ import { fullPostToggle, setDelete } from "../../redux/navigateSlice";
 import { addComment, downvotePost, upvotePost } from "../../redux/apiRequests";
 import Comments from "../Comments/Comments";
 import InputField from "../InputFields/Input";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 
-const Post = (props) => {
+const Post = React.forwardRef((props, ref) => {
     const { post, comments, setDeleteComment, deleteComment} = props;
     const navigate = useNavigate();
     const [comment, setComment] = useState("");
@@ -94,7 +94,7 @@ const Post = (props) => {
   };
 
     return ( 
-      <div key={post?._id} className="post-container">
+      <div key={post?._id} ref={ref} className="post-container">
         {fullPost?.postId === post?._id && (
           <div className="close-post" onClick={closeFullPost}>
             Close
@@ -244,6 +244,6 @@ const Post = (props) => {
     </div>
        
      );
-}
+});
  
 export default Post;

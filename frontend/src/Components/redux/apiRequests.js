@@ -46,6 +46,9 @@ import {
   deleteCommentFailed,
   deleteCommentStart,
   deleteCommentSuccess,
+  getUserCommentStart,
+  getUserCommentFailed,
+  getUserCommentSuccess,
 } from "./commentSlice";
 
 export const loginUser = async (user, dispatch, navigate) => {
@@ -134,17 +137,25 @@ export const loginUser = async (user, dispatch, navigate) => {
   };
 
   //POST
-  export const getAllPosts = async (dispatch, token, hot) => {
+  export const getAllPosts = async (
+    dispatch,
+    token,
+    hot,
+    pageNumber,
+    setHasMore
+  ) => {
     dispatch(getAllPostStart());
     try {
-      const res = await axios.get(hot ? `/v1/post?${hot}=true` : `/v1/post`, {
-        headers: { token: `Bearer ${token}` },
-      });
-      const comments = await axios.get(`/v1/post/comments`, {
-        headers: { token: `Bearer ${token}` },
-      });
-      dispatch(getAllPostSuccess(res.data));
-      dispatch(getAllCommentsSuccess(comments.data));
+      const res = await axios.get(
+        hot
+          ? `/v1/post?${hot}=true&page=${pageNumber}&limit=3`
+          : `/v1/post?page=${pageNumber}&limit=3`,
+        {
+          headers: { token: `Bearer ${token}` },
+        }
+      );
+      setHasMore(res.data.results.length > 0);
+      dispatch(getAllPostSuccess(res.data.results));
     } catch (err) {
       dispatch(getAllPostFailed());
     }
@@ -156,13 +167,21 @@ export const loginUser = async (user, dispatch, navigate) => {
       const res = await axios.get(`/v1/post/user/${userId}`, {
         headers: { token: `Bearer ${token}` },
       });
-      const comments = await axios.get(`/v1/post/comments`, {
-        headers: { token: `Bearer ${token}` },
-      });
-      dispatch(getAllCommentsSuccess(comments.data));
       dispatch(getUserPostSuccess(res.data));
     } catch (err) {
       dispatch(getUserPostFailed());
+    }
+  };
+  
+  export const getUserComment = async (dispatch, token, postId) => {
+    dispatch(getUserCommentStart());
+    try {
+      const res = await axios.get(`/v1/post/comment/${postId}`, {
+        headers: { token: `Bearer ${token}` },
+      });
+      dispatch(getUserCommentSuccess(res.data));
+    } catch (err) {
+      dispatch(getUserCommentFailed());
     }
   };
   

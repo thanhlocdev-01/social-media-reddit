@@ -58,15 +58,8 @@ const postController = {
 
   //GET ALL POSTS
   getAllPosts: async (req, res) => {
-    const byVotes = req.query.hot;
-    let posts;
     try {
-      if (byVotes) {
-        posts = await Post.find().sort({ upvotes: -1});
-      } else {
-        posts = await Post.find().sort({ createdAt: -1 });
-      }
-      res.status(200).json(posts);
+      res.status(200).json(res.paginatedResults);
     } catch (err) {
       res.status(500).json(err);
     }
