@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/post");
 const userRoute = require("./routes/user");
+const newsRoute = require("./routes/news");
 
 dotenv.config();
 
