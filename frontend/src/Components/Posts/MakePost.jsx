@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../redux/apiRequests";
 import { makePostToggle } from "../redux/navigateSlice"
 import InputField from "../InputFields/Input";
+import listContainer from "../../utils/listContainer";
 import './post.css';
 
 const MakePost = () => {
@@ -11,7 +12,7 @@ const MakePost = () => {
     const [title, setTitle] = useState("Add a title");
     const [desc, setDesc] = useState("Add some descriptions");
     const [selectIdx, setSelectIdx] = useState(0);
-    const tags = ["None", "NSFW", "Mood", "Quotes", "Shitpost"];
+    const tags = listContainer.tags;
     const [previewSource, setPreviewSource] = useState("");
     const handlePost = () => {
       if (!previewSource) {

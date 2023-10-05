@@ -28,7 +28,6 @@ import {
   deletePostFailed,
   deletePostStart,
   deletePostSuccess,
-  getAllCommentsSuccess,
   getAllPostFailed,
   getAllPostStart,
   getAllPostSuccess,

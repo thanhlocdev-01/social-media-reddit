@@ -8,9 +8,13 @@ import Popup from "../Popup/Popup";
 import Posts from "../../Posts/Post";
 import FullPost from "../../Posts/FullPost/FullPost";
 import { useCallback } from "react";
+import { useLocation } from "react-router-dom";
+import { unmountPost } from "../../../redux/postSlice";
+import Loading from "../../Loading/Loading";
 
 const HomePage = () => {
   const user = useSelector((state) => state.user.user?.currentUser);
+  const location = useLocation();
   const createPost = useSelector((state) => state.post.createPost);
   const fullPost = useSelector((state) => state.nav.fullPost);
   const allComments = useSelector((state) => state.comment.addComments);
@@ -19,7 +23,6 @@ const HomePage = () => {
   const allPosts = useSelector((state) => state.post.allPosts?.posts);
   const [deletedPostId, setDeletedId] = useState([]);
   const isDelete = useSelector((state) => state.nav.deleteState);
-  const deletePost = useSelector((state) => state.post.deletePost);
   const [filter, setFilters] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(false);
@@ -44,8 +47,11 @@ const HomePage = () => {
   );
 
   useEffect(() => {
+    dispatch(unmountPost());
+  }, [location]);
+
+  useEffect(() => {
     getAllPosts(dispatch, user?.accessToken, filter, pageNumber, setHasMore);
-    console.log("rendered");
   }, [user, filter, createPost, allComments, dispatch, deleteComment, interactPost, pageNumber,]);
 
   const handleFilters = (e) => {
@@ -77,6 +83,12 @@ const HomePage = () => {
           )}
         </div>
         <div className="homepage-post">
+          <Loading
+            loadingType="BeatLoader"
+            color="white"
+            size="10px"
+            loading={loading}
+          />
           {fullPost.open && <FullPost />}
           {filteredPost?.map((post, idx) => {
             if (filteredPost.length === idx + 1) {

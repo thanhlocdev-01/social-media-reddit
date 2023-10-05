@@ -8,9 +8,7 @@ const Header = (props) => {
   const user = useSelector((state) => state.user.user?.currentUser);
   const currentUser = useSelector((state) => state.user.otherUser?.otherUser);
   const { id } = useParams();
-  const [isFollowed, setFollowed] = useState(
-    user?.followings.includes(id)
-  );
+  const [isFollowed, setFollowed] = useState(user?.followings.includes(id));
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { setEdit, isEdit } = props;

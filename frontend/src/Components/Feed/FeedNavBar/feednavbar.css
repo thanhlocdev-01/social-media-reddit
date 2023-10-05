@@ -9,4 +9,9 @@
 .feed-navbar > a{
     text-decoration: none;
     color:white;
+
+}
+.feed-navbar-selected{
+    border-bottom: 3px solid rgb(41, 128, 243);
+    padding-bottom: 0.25rem;
 }
