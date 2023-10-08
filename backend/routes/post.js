@@ -25,6 +25,13 @@ router.get("/user/:id", middlewareController.verifyToken,postController.getPosts
 //GET ALL POSTS
 router.get("/", middlewareController.verifyToken, postController.getAllPosts);
 
+//GET TIMELINE POST
+router.post(
+  "/timeline",
+  middlewareController.verifyToken,
+  postController.getFriendsPost
+);
+
 //UPVOTE A POST
 router.put("/:id/upvote", middlewareController.verifyToken, postController.upvotePost);
 

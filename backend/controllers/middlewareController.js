@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const Post = require("../models/Post");
 
 const middlewareController = {
   verifyToken: (req, res, next) => {
