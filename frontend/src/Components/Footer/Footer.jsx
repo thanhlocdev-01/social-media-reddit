@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { makePostToggle } from "../redux/navigateSlice"
+import { makePostToggle } from "../../redux/navigateSlice"
 import './footer.css'
 
 const Footer = () => {

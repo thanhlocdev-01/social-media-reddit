@@ -38,6 +38,12 @@ router.put("/:id/upvote", middlewareController.verifyToken, postController.upvot
 //DOWNVOTE A POST
 router.put("/:id/downvote", middlewareController.verifyToken, postController.downvotePost);
 
+router.put(
+  "/:id/favorite",
+  middlewareController.verifyToken,
+  postController.addFavoritePost
+);
+
 //ADD A COMMENT
 router.post("/comment/:id",middlewareController.verifyToken, commentController.addComment);
 

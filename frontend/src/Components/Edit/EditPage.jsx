@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { useParams } from 'react-router-dom';
 import './edit.css'
 import InputField from '../InputFields/Input';
-import {updateUser} from '../redux/apiRequests'
+import { updateUser } from '../../redux/apiRequests'
 
 const EditPage = (props) => {
     const {setEdit} = props;

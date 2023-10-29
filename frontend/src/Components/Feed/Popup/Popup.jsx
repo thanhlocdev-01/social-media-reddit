@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import "./popup.css";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost } from "../../redux/apiRequests";
-import {setDelete} from "../../redux/navigateSlice";
+import { deletePost } from "../../../redux/apiRequests";
+import {setDelete} from "../../../redux/navigateSlice";
 import Overlay from "../../Overlay/Overlay";
+import "./popup.css";
 
 const Popup = (props) => {
   const { h1, h2, button2, setDeletedPostId,deletedPostId } = props;

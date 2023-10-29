@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import FeedLayout from "../Feed/Layout/FeedLayout";
 import useFetchData from "../Hooks/useFetchData";
 import Loading from "../Loading/Loading";
-import Posts from "../Posts/Posts";
+import Posts from "../Posts/Post";
 
 const Friends = () => {
   const fullPost = useSelector((state) => state.nav.fullPost);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../redux/apiRequests";
+import { loginUser } from "../../redux/apiRequests";
 import InputField from "../InputFields/Input";
 import "./login.css";
 

@@ -1,13 +1,11 @@
-import "./sidebar.css";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { format } from "timeago.js";
-// import arrowDown from "../../../assets/icons/arrow.svg";
-// import shirtIcon from "../../../assets/icons/shirt.svg";
-// import karmasIcon from "../../../assets/icons/karmas.svg";
-// import cakeIcon from "../../../assets/icons/cake.svg";
-// import SideNavBar from "../SideNavBar/SideNavBar";
-import { sideBarToggle } from "../../redux/navigateSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { FaTshirt } from "react-icons/fa";
+import { RiCopperCoinLine, RiCake3Line } from "react-icons/ri";
+import { format } from "timeago.js";
+import SideNavBar from "../SideNavBar/SideNavBar";
+import { sideBarToggle } from "../../../redux/navigateSlice";
+import "./sidebar.css";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -33,36 +31,48 @@ const SideBar = () => {
             </div>
             <section className="sidebar-container">
               <div className="sidebar-ava">
-                <img src={user?.profilePicture} className="sidebar-img" alt="profile pic"/>
+              <img
+                  src={user?.profilePicture}
+                  className="sidebar-img"
+                  alt="profile pic"
+                />
               </div>
               <div className="text-4xl font-bold">
                 u/{user?.username}
-                {/* <img className="sidebar-username-dropdown" src={arrowDown} alt="arrow img"/> */}
+                
               </div>
               <div className="sidebar-styleava">
-                {/* <img src={shirtIcon} alt="shirt icon" /> */}
+                <FaTshirt size={"24px"} className="sidebar-shirt"/>
                 <span className="sidebar-styleava-title" onClick={goToHeader}>
                   Style Avatar
                 </span>
               </div>
               <div className="sidebar-info">
                 <div className="karmas-container">
-                  {/* <img src={karmasIcon} className="karmas-logo" alt="karam logo"/> */}
+                  <RiCopperCoinLine
+                    size={"24px"}
+                    color="rgb(2, 88, 158)"
+                    className="karmas-logo"
+                  />
                   <span className="karmas-title">
                     {user?.karmas}
                     <div className="karmas-header">Karma </div>
                   </span>
                 </div>
                 <div className="age-container">
-                  {/* <img src={cakeIcon} className="age-logo" alt="cake logo" /> */}
+                  <RiCake3Line
+                    size={"24px"}
+                    color="rgb(2, 88, 158)"
+                    className="age-logo"
+                  />
                   <span className="age-title">
-                    {/* {format(user?.createdAt).split("ago")} */}
+                    {format(user?.createdAt).split("ago")}
                     <div className="age-header"> Age </div>{" "}
                   </span>
                 </div>
               </div>
               <div className="sidebar-nav">
-                {/* <SideNavBar id={user?._id} /> */}
+                <SideNavBar id={user?._id} />
               </div>
             </section>
           </div>

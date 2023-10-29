@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import EditPage from "../Edit/EditPage";
 import Footer from "../Footer/Footer";
@@ -6,9 +8,7 @@ import MakePost from "../Posts/MakePost";
 import Posts from "../Posts/Post";
 import "../../App.css";
 import Popup from "../Feed/Popup/Popup";
-import { useEffect } from "react";
-import { getUserPost } from "../redux/apiRequests";
-import { useParams } from "react-router-dom";
+import { getUserPost } from "../../redux/apiRequests";
 import FullPost from "../Posts/FullPost/FullPost";
 
 const UserProfile = (props) => {

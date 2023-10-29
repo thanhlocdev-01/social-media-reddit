@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-// import gpBackIcon from "../../assets/icons/leftarrow.svg";
-import { followUser, getUser } from "../../redux/apiRequests";
+import { IoIosArrowRoundBack } from "react-icons/io";
+import { followUser, getUser } from "../../../redux/apiRequests";
 import "./header.css";
 const Header = (props) => {
   const user = useSelector((state) => state.user.user?.currentUser);
@@ -47,10 +47,9 @@ const Header = (props) => {
         <div className="info-container">
           <div className="edit-goback">
             <p className="go-back">
-              <img
-                // src={gpBackIcon}
+              <IoIosArrowRoundBack
+                size={"52px"}
                 onClick={() => navigate("/")}
-                alt="go back icon"
               />
             </p>
             {user?._id === id ? (

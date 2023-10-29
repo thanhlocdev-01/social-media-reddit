@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserComment, getUserPost } from "../../../redux/apiRequests";
 import Comments from "../../Comments/Comments";
 import Overlay from "../../Overlay/Overlay";
-import Posts from "../Posts";
+import Posts from "../Post";
 
 const FullPost = () => {
   const fullPost = useSelector((state) => state.nav.fullPost);

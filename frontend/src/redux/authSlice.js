@@ -49,6 +49,7 @@ export const authSlice = createSlice({
       state.register.isFetching = false;
       state.register.success = false;
       state.register.error = true;
+      state.register.message = action.payload;
     },
     logoutStart: (state) => {
       state.logout.isFetching = true;

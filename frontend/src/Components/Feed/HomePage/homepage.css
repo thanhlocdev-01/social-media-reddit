@@ -87,14 +87,16 @@
     align-items: center;
   }
   .post-edit-delete{
-    background-color: transparent;
-    margin-left: auto;
+    cursor:pointer;
   }
-  .post-edit-delete > img {
+  .add-to-favorites{
     cursor: pointer;
-    width: 24px;
-    margin-right: 0.75rem;
-    height: 24px;
+  }
+  .features-container{
+    margin-left: auto;
+    gap:1rem;
+    display: flex ;
+    flex-direction: row;
   }
   .close-post {
     cursor: pointer;
@@ -106,6 +108,7 @@
   .upvote > img,
   .downvote > img,
   .comments > img {
+    cursor:pointer;
     width: 24px;
     cursor: pointer;
     height: 24px;

@@ -19,15 +19,15 @@ const authController = {
 
       //Save user to DB
       const user = await newUser.save();
-      return res.status(200).json(user);
+      res.status(200).json(user);
     } catch (err) {
-      return res.status(500).json(err);
+      res.status(500).json(err);
     }
   },
   //GENERATE ACCESS TOKEN
   generateAccessToken: (user) => {
     return jwt.sign(
-      {
+      { 
         id: user.id,
         isAdmin: user.isAdmin
       },
