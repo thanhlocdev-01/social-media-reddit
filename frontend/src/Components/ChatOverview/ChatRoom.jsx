@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 import "./chatroom.css";
 import { useState } from "react";
 import { useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Message from "./Message";
 import Footer from "../Footer/Footer";
 import InputField from "../InputFields/Input";
@@ -16,17 +16,21 @@ const ChatRoom = () => {
   const room = useSelector((state) => state.nav.message.room);
   const [messages, setMessage] = useState([]);
   const [newMsg, setNewMsg] = useState("");
-  const [isConnected, setConnected] = useState(false);
   const [receivedMsg, setReceivedMsg] = useState("");
   const socket = useRef();
+  const [partner, setPartner] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const navigate = useNavigate();
   const scrollRef = useRef();
   const { id } = useParams();
-  const partnerName = useSelector(
-    (state) => state.nav.message.partnerName?.username
-  );
+  const axiosInstance = axios.create({
+    headers: {
+      token: `Bearer ${user?.accessToken}`,
+    },
+  });
   const handleGoBack = () => {
     navigate("/");
+    socket.current.disconnect();
   };
 
   useEffect(() => {
@@ -38,35 +42,51 @@ const ChatRoom = () => {
         createdAt: Date.now(),
       });
     });
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
-    socket.current.emit("addUser", user?._id);
-    socket.current.on("getUsers", (users) => {
-      console.log(users);
-    });
-  }, [user]);
-
-  useEffect(() => {
-    console.log(receivedMsg);
     receivedMsg &&
       room?.members.includes(receivedMsg.sender) &&
       setMessage((prev) => [...prev, receivedMsg]);
   }, [receivedMsg, room]);
 
   useEffect(() => {
+    socket.current.emit("addUser", user?._id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [user]);
+
+  useEffect(() => {
     const getMessage = async () => {
       try {
-        const res = await axios.get(`/v1/message/${room?._id}`, {
-          headers: { token: `Bearer ${user.accessToken}` },
-        });
-        setMessage(res.data);
+        const partnerId = room?.members.find((m) => m !== user?._id);
+        let endpoints = [`/v1/users/${partnerId}`, `/v1/message/${room._id}`];
+        axios.all(
+          endpoints.map((endpoint) =>
+            axiosInstance.get(endpoint).then(
+              axios.spread(({ data: partner }, { data: message }) => {
+                console.log({ partner });
+                // setPartner({partner});
+                // setMessage({message});
+              })
+            )
+          )
+        );
+        // const partner = await axios.get(`/v1/users/${partnerId}`, {
+        //   headers: { token: `Bearer ${user.accessToken}` },
+        // });
+        // const res = await axios.get(`/v1/message/${room._id}`, {
+        //   headers: { token: `Bearer ${user.accessToken}` },
+        // });
+        // setPartner(partner.data);
+        // setMessage(res.data);
       } catch (e) {
         console.log(e);
       }
     };
     getMessage();
-  }, []);
+  }, [room]);
 
   const submitMessage = async () => {
     const message = {
@@ -77,10 +97,10 @@ const ChatRoom = () => {
     if (newMsg.length === 0) {
       console.log("Empty msg");
     } else {
-      const receiverId = room?.members.find((member) => member !== user?._id);
+      const receiverId = partner?._id;
       socket.current.emit("sendMessage", {
-        senderId: user?._id,
-        receiverId: receiverId,
+        senderId: user._id,
+        receiverId,
         text: newMsg,
       });
       try {
@@ -101,15 +121,21 @@ const ChatRoom = () => {
 
   return (
     <section className="convo-container">
-      <div className="go-back-convo" onClick={handleGoBack}>
-        <IoIosArrowRoundBack size={"48px"} />
+      <div className="convo-header">
+        <div className="go-back-convo" onClick={handleGoBack}>
+          <IoIosArrowRoundBack size={"48px"} />
+        </div>
+        <div className="message-header"> {partner?.username} </div>
       </div>
-      <div className="message-header"> {partnerName} </div>
       <div className="chat-box-top">
         {messages.map((msg) => {
           return (
             <div ref={scrollRef} className="msg-container">
-              <Message message={msg} own={msg.sender === user._id} />
+              <Message
+                message={msg}
+                own={msg.sender === user._id}
+                partner={partner}
+              />{" "}
             </div>
           );
         })}

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import EditPage from "../Edit/EditPage";
 import Footer from "../Footer/Footer";
-import Header from "../Feed/Header/Header";
+import Header from "../Header/Header";
 import MakePost from "../Posts/MakePost";
 import Posts from "../Posts/Post";
 import "../../App.css";

@@ -28,6 +28,7 @@ const ChatOverview = () => {
     getConversation();
   }, []);
   const openConversation = (conversation) => {
+    console.log("open convo");
     dispatch(setRoom(conversation));
     navigate("/chat/" + conversation._id);
   };
