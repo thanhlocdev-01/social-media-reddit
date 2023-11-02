@@ -11,7 +11,7 @@ const ChatOverview = () => {
   const [conversation, setConversations] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [messages, setMessages] = useState([]);
+  //io("ws://localhost:8900")
   const user = useSelector((state) => state.user.user?.currentUser);
 
   useEffect(() => {
@@ -42,8 +42,7 @@ const ChatOverview = () => {
           return (
             <div
               className="conversation-container"
-              onClick={() => openConversation(conversation)}
-            >
+              onClick={() => openConversation(conversation)}>
               <Conversation
                 key={conversation._id}
                 conversation={conversation}
