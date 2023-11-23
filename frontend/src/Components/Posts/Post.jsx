@@ -9,7 +9,12 @@ import { format } from "timeago.js";
 import './post.css';
 import "../Feed/HomePage/homepage.css";
 import { fullPostToggle, setDelete } from "../../redux/navigateSlice";
-import { addComment, downvotePost, upvotePost } from "../../redux/apiRequests";
+import {
+  addComment,
+  addToFavorites,
+  downvotePost,
+  upvotePost,
+} from "../../redux/apiRequests";
 import Comments from "../Comments/Comments";
 import InputField from "../InputFields/Input";
 import {listContainer} from "../../utils/listContainer";
@@ -18,7 +23,6 @@ const Post = React.forwardRef((props, ref) => {
     const { post, comments, setDeleteComment, deleteComment} = props;
     const navigate = useNavigate();
     const [comment, setComment] = useState("");
-    const [isFavorite, setFavorite] = useState(false);
     const user = useSelector((state) => state.user.user?.currentUser);
     const [totalVotes, setTotal] = useState(
       post?.upvotes?.length - post?.downvotes?.length
@@ -90,10 +94,6 @@ const Post = React.forwardRef((props, ref) => {
     setComment("");
     addComment(dispatch, user?.accessToken, id, newComment);
   };
-  const handleFavorite = (id) => {
-    setFavorite(!isFavorite);
-    console.log(id);
-  };
 
     return ( 
       <div key={post?._id} ref={ref} className="post-container">
@@ -128,15 +128,6 @@ const Post = React.forwardRef((props, ref) => {
               />
             </div>
           )}
-
-          <div className="add-to-favorites">
-            <FiStar
-              size="24px"
-              color={`${isFavorite ? "#e9c46a" : "grey"}`}
-              fill={`${isFavorite ? "#e9c46a" : "none"}`}
-              onClick={() => handleFavorite(post?._id)}
-            />
-          </div>
         </div>
       </div>
       <div className="post-context">

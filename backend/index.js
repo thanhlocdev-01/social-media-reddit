@@ -19,11 +19,9 @@ const conversationRoute = require("./routes/conversation");
 dotenv.config();
 
 //CONNECT DATABASE
-mongoose.connect(process.env.DB_URL, () =>{
-    console.log("CONNECTED TO MONGO DB");
+mongoose.connect(process.env.DB_URL, () => {
+  console.log("CONNECTED TO MONGO DB");
 });
-
-
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
@@ -37,7 +35,6 @@ app.use(cors());
 app.use(cookieParser());
 app.use(morgan("common"));
 
-
 //Routes
 app.use("/v1/auth", authRoute);
 app.use("/v1/post", postRoute);
@@ -46,7 +43,6 @@ app.use("/v1/news", newsRoute);
 app.use("/v1/conversation", conversationRoute);
 app.use("/v1/message", messageRoute);
 
-
-app.listen(8000,()=> {
-    console.log("Sever is runing...")
-})
+app.listen(process.env.PORT || 8000, () => {
+  console.log("Sever is runing...");
+});

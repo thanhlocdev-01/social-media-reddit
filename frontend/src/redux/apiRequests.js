@@ -11,17 +11,17 @@ import {
   followUserSuccess,
   followUserFailed,
 } from "./userSlice";
-import axios from 'axios';
-import { 
-  loginFailed, 
-  loginStart, 
+import axios from "axios";
+import {
+  loginFailed,
+  loginStart,
   loginSuccess,
   logoutFailed,
   logoutStart,
   logoutSuccess,
-  registerFailed, 
-  registerStart, 
-  registerSuccess 
+  registerFailed,
+  registerStart,
+  registerSuccess,
 } from "./authSlice";
 import {
   createPostFailed,

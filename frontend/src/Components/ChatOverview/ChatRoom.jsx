@@ -34,7 +34,9 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io("https://reddat-socket.onrender.com", {
+      transports: ["websocket"],
+    });
     socket.current.on("getMessage", (data) => {
       setReceivedMsg({
         sender: data.senderId,
